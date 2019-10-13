@@ -23,6 +23,8 @@ if($ShowPodcastInfoOnly){
 else{
     $PodcastEpisodesToDownload = $PodcastEpisodes
     $PodcastEpisodesToDownload | ForEach-Object -ThrottleLimit $SimultaneousDownload -Verbose -Parallel {
-        Invoke-WebRequest -Uri $_.mp3url -OutFile "$($using:DownloadDirObj.FullName)/$($_.PubDate + " - " + $([regex]::Replace($_.title, '[!/:,?]', ''))).mp3"
+        $OutFilePath = "$($using:DownloadDirObj.FullName)/$($_.PubDate + " - " + $([regex]::Replace($_.title, '[!/:,?]', ''))).mp3"
+        Invoke-WebRequest -Uri $_.mp3url -OutFile "$OutFilePath"
+        Write-Host "Download Completed: $OutFilePath "
     }   
 }
